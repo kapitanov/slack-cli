@@ -2,9 +2,9 @@ package gui
 
 import "github.com/gizak/termui"
 
-const inputBoxPromptFg = termui.ColorYellow
+const inputBoxPromptFg = termui.ColorYellow | termui.AttrBold
 const inputBoxPromptBg = termui.ColorBlack
-const inputBoxValueFg = termui.ColorWhite
+const inputBoxValueFg = termui.ColorWhite | termui.AttrBold
 const inputBoxValueBg = termui.ColorBlack
 
 type InputBox struct {

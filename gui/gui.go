@@ -5,6 +5,12 @@ import (
 	"log"
 )
 
+var refreshGui = make(chan bool, 1)
+
+func RefreshGUI() {
+    refreshGui <- true
+}
+
 func RunGUI() {
 	err := termui.Init()
 	if err != nil {
@@ -13,7 +19,7 @@ func RunGUI() {
 	}
 	//defer termui.Close()
 
-	height := termui.TermHeight() - 8
+	height := termui.TermHeight() - 5
 
 	msgTitle := termui.NewPar("%CHAT_TITLE%")
 	msgTitle.Height = 3
@@ -27,6 +33,7 @@ func RunGUI() {
 		"[13:38:00] @alex:",
 		"           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit involuptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	}
+    msgList.Overflow = "wrap"
 
 	chatList := NewChatList()
 	chatList.SetHeight(height)
@@ -43,7 +50,7 @@ func RunGUI() {
 	chatList.AddOrUpdateItem("#general 11", ClUnread)
 	chatList.AddOrUpdateItem("#general 12", ClSelected)
 
-	inputBox := NewInputBox(">", "Input a message and press <Enter> to send it")
+	inputBox := NewInputBox("> ", "Input a message and press <Enter> to send it")
 
 	termui.Body.AddRows(
 		termui.NewRow(
@@ -69,7 +76,7 @@ func RunGUI() {
 
 	termui.Body.Align()
 	termui.Render(termui.Body)
-	return
+	//return
 
 	for {
 		select {
@@ -80,6 +87,9 @@ func RunGUI() {
 					return
 				}
 			}
+        case <- refreshGui:
+            termui.Body.Align()
+	        termui.Render(termui.Body)
 		}
 	}
 }

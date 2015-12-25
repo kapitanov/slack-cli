@@ -3,22 +3,23 @@ package gui
 import "github.com/gizak/termui"
 
 const chatListBg = termui.ColorBlue
-const chatListFg = termui.ColorCyan
-const chatListPrefixFg = termui.ColorYellow
-const chatListItemFg = termui.ColorWhite
+const chatListFg = termui.ColorCyan | termui.AttrBold
 
-const TOP_RIGHT = '┐'
-const VERTICAL_LINE = '│'
-const HORIZONTAL_LINE = '─'
-const TOP_LEFT = '┌'
-const BOTTOM_RIGHT = '┘'
-const BOTTOM_LEFT = '└'
-const VERTICAL_LEFT = '┤'
-const VERTICAL_RIGHT = '├'
-const HORIZONTAL_DOWN = '┬'
-const HORIZONTAL_UP = '┴'
-const QUOTA_LEFT = '«'
-const QUOTA_RIGHT = '»'
+const chatListNormalItemBg = termui.ColorBlue
+const chatListNormalItemFg = termui.ColorWhite | termui.AttrBold
+const chatListNormalItemPrefixFg = termui.ColorWhite | termui.AttrBold
+
+const chatListSelectItemBg = termui.ColorCyan
+const chatListSelectItemFg = termui.ColorBlack
+const chatListSelectItemPrefixFg = termui.ColorYellow | termui.AttrBold
+
+const chatListUnreadItemBg = termui.ColorBlue
+const chatListUnreadItemFg = termui.ColorYellow | termui.AttrBold
+const chatListUnreadItemPrefixFg = termui.ColorGreen | termui.AttrBold
+
+const chatListNormalItemPrefix = "   "
+const chatListUnreadItemPrefix = "<!>"
+const chatListSelectedItemPrefix = "   "
 
 type ChatListItemState int32
 
@@ -115,22 +116,22 @@ func (list *ChatList) Buffer() []termui.Point {
 		var fg, prefixFg, bg termui.Attribute
 		switch item.state {
 		case ClSelected:
-			prefix = ">>>"
-			prefixFg = termui.ColorYellow
-			fg = termui.ColorBlack
-			bg = termui.ColorCyan
+			prefix = chatListSelectedItemPrefix
+			prefixFg = chatListSelectItemPrefixFg
+			fg = chatListSelectItemFg
+			bg = chatListSelectItemBg
 			break
 		case ClUnread:
-			prefix = "(*)"
-			prefixFg = termui.ColorMagenta
-			fg = termui.ColorMagenta
-			bg = termui.ColorBlue
+			prefix = chatListUnreadItemPrefix
+			prefixFg = chatListUnreadItemPrefixFg
+			fg = chatListUnreadItemFg
+			bg = chatListUnreadItemBg
 			break
 		default:
-			prefix = "   "
-			prefixFg = termui.ColorWhite
-			fg = termui.ColorWhite
-			bg = termui.ColorBlue
+			prefix = chatListNormalItemPrefix
+			prefixFg = chatListNormalItemPrefixFg
+			fg = chatListNormalItemFg
+			bg = chatListNormalItemBg
 			break
 		}
 
